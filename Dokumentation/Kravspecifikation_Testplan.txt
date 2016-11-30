@@ -1,0 +1,47 @@
+------------------------Kravspecifikation-----------------------
+
+Den ska visa dag binärt med led lampor
+Den ska uppdatera lamporna klockan 00.01 varje ny dag
+Man ska kunna ställa in dag och tid genom 3 knappar (mode, +, -)
+Ha en display där vi visar tiden
+Hålla tiden/inte drifta
+
+
+----------------------------Testplan----------------------------
+
+---- Unittest ----
+
+-- Tid
+Testa att mikrokontrollern ökar sekunder med 1, varje tids sekund och sparar det. - med en räkne function
+Testa att den håller tiden genom att mäta tidsintervall - mäta med oscilloskåp
+
+-- Display
+Testa att skriva ut ett tecken till display - Okulärt test
+Testa att skriva ut datum - Okulärt test
+Testa att displayen klarar av att uppdatera en gång i sekunden utan flimmer - Okulärt test
+
+-- Knappar
+Testa och se att MCU registrerar att vi trycker på mode knapp - Tryck på knapp och tänd lampa
+Testa och se att MCU registrerar att vi trycker på + - knapp - Tryck på knapp och tänd lampa
+Testa och se att MCU registrerar att vi trycker på - - knapp - Tryck på knapp och tänd lampa
+Testa att rätt funktion körs vid knapptryck - funktion som kollar ett register
+Testa och se att MCU enbart reagerar vid knapptryck (ingen ghosting) - Kolla störning med oscilloskåp och se koden
+
+-- LED
+Testa att lampa 1-5 fungerar - Okulärt test
+Testa och se till så att MCU kan kontrollera dem - Okulärt test
+
+
+
+
+---- Komponenttest -----
+
+Testa och se om vi kan ställa in datum - Okulärt test, se display
+Testa och se om vi kan ställa in tid - Okulärt test, se display
+Testa och se om vi kan skriva ut tiden på display - Okulärt test, se display
+Testa och se om vi kan ändra vilka lampor som är tända, beroendes på dag och tid - Okulärt test, se display
+
+
+----- Systemtest ----
+
+Se så att rätt lampa är tänd när vi ändrat datum och MCU kör och att de ändras när datum ändras - Okulärt test
