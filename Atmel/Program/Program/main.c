@@ -5,6 +5,7 @@
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include <util/delay.h>
+#include <stdlib.h>
 #include "lcd.h"
 
 #define MODE (1<<0)
@@ -29,22 +30,22 @@ uint8_t current_mode = 0;
 
 typedef struct {
     uint8_t sec;
-    uint8_t sec_array[10];
+    char sec_array[10];
 
     uint8_t min;
-    uint8_t min_array[10];
+    char min_array[10];
 
     uint8_t hour;
-    uint8_t hour_array[10];
+    char hour_array[10];
 
     uint8_t day;
-    uint8_t day_array[10];
+    char day_array[10];
 
     uint8_t month;
-    uint8_t month_array[10];
+    char month_array[10];
     
     uint16_t year;
-    uint8_t year_array[10];
+    char year_array[10];
 
 }date_time; // Maybe do two structs???
 
@@ -57,6 +58,8 @@ void timer_init(void);
 void system_init(void);
 void pin_interrupt_init(void);
 void update_display(void);
+
+volatile uint8_t interrupt_bits_old = 0;
 
 int main() {
 
@@ -116,43 +119,49 @@ void update_time(void){
 
 uint8_t change_time(uint8_t input) {
 
-    switch ( current_mode ){
+    switch ( current_mode ) {
         case SECONDS:
             if ( input == INCREASE ) {
                 date.sec++;
             } else {
                 date.sec--;
             }
+            break;
         case MINUTE:
             if ( input == INCREASE ) {
                 date.min++;
             } else {
                 date.min--;
             }
+            break;
         case HOUR:
             if ( input == INCREASE ) {
                 date.hour++;
             } else {
                 date.hour--;
             }
+            break;
         case DAY:
             if ( input == INCREASE ) {
                 date.day++;
             } else {
                 date.day--;
             }
+            break;
         case MONTH:
             if ( input == INCREASE ){
                 date.month++;
             } else {
                 date.month--;
             }
+            break;
         case YEAR:
             if ( input == INCREASE ) {
                 date.year++;
             } else {
                 date.year--;
             }
+            break;
     }
     update_display();
     return 1;
@@ -167,8 +176,8 @@ void update_display(void){
     itoa(date.sec, date.month_array, 10);
     itoa(date.sec, date.year_array, 10);
 
-    uint8_t row1[16] = "DATE: 2016/12/23";
-    uint8_t row2[16] = " Time: 15:23:01 ";
+    char row1[16] = "DATE: 2016/12/23";
+    char row2[16] = " Time: 15:23:01 ";
 
     uint8_t i;
 
@@ -235,7 +244,7 @@ void timer_init(void) {
 void pin_interrupt_init(void){
 
     EICRA |= (1<<ISC01); // Interrupt on falling edge
-    PCICR |= (PCIE1); // Enable interrupt on PCMSK0
+    PCICR |= (1<<PCIE1); // Enable interrupt on PCMSK1
 
 }
 
@@ -248,7 +257,7 @@ ISR(TIMER1_COMPA_vect) {
     }
     if(date.sec >= 60) date.sec = 0;
 }
-
+/*
 ISR(PCINT0_vect){
     button_pressed = PCMSK0;
 
@@ -263,6 +272,27 @@ ISR(PCINT0_vect){
     }
     else if ( button_pressed & MINUS ) {
         time_control |= MINUS;
+    }
+}
+*/
+ISR(PCINT1_vect) {
+    uint8_t interrupt_bits_new;
+
+    interrupt_bits_new = PINC ^ interrupt_bits_old;
+    interrupt_bits_old = PINC;
+
+    switch (interrupt_bits_new) {
+        case PCINT11 : 
+            time_control |= MODE;
+            if (current_mode <= 0)
+                current_mode = 7;
+            break;
+        case PCINT12 :
+            time_control |= PLUS;
+            break;
+        case PCINT13 :
+            time_control |= MINUS;
+            break;
     }
 }
 
