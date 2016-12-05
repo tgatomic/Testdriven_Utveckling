@@ -1,15 +1,17 @@
 #include <stdint.h>
-#include <util/delay.h>
 #include <stdlib.h>
 #include "main.h"
-#include "test.h"
 #include "lcd.h"
+#include "test.h"
+#include <util/delay.h>
+
 
 uint8_t run_tests(void){
 
     uint8_t test_passed = 0;
-    uint8_t nmbr_of_tests = 5;
+    uint8_t nmbr_of_tests = 6;
 
+    test_passed += test_leds();
     test_passed += test_sec();
     test_passed += test_lcd();
     test_passed += test_lcd_date();
@@ -27,6 +29,24 @@ uint8_t run_tests(void){
         lcd_puts("PASSED!");
         return FALSE;
     }
+    _delay_ms(3000);
+}
+
+uint8_t test_leds(void){
+
+    PORTB = (1<<PORTB0);
+    _delay_ms(500);
+    PORTB = (1<<PORTB1);
+    _delay_ms(500);
+    PORTB = (1<<PORTB2);
+    _delay_ms(500);
+    PORTB = (1<<PORTB3);
+    _delay_ms(500);
+    PORTB = (1<<PORTB4);
+    _delay_ms(500);
+
+    return TRUE;
+
 }
 
 uint8_t test_sec(void ){
@@ -41,7 +61,7 @@ uint8_t test_sec(void ){
             return FALSE;
         }
         last_sec = date.sec;
-        _delay_ms(1500);
+        _delay_ms(1200);
     }
     return TRUE;
 }
@@ -51,7 +71,7 @@ uint8_t test_lcd(void){
     lcd_clrscr();
     lcd_gotoxy(0,0);
     lcd_puts("TEST_LCD");
-    _delay_ms(2000);
+    _delay_ms(1000);
     return TRUE;
 }
 

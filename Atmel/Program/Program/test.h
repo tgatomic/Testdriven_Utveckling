@@ -13,6 +13,7 @@
 #define FALSE 0
 
 uint8_t run_tests(void);
+uint8_t test_leds(void);
 uint8_t test_sec(void);
 uint8_t test_lcd(void);
 uint8_t test_lcd_date(void);

@@ -45,8 +45,6 @@
 #include <inttypes.h>
 #include <avr/pgmspace.h>
 
-#define F_CPU 1000000
-
 #define LCD_PORT         PORTD        /**< port for the LCD lines   */
 #define LCD_DATA0_PORT   PORTD     /**< port for 4bit data bit 0 */
 #define LCD_DATA1_PORT   PORTD     /**< port for 4bit data bit 1 */
@@ -63,7 +61,7 @@
 #define LCD_E_PORT       PORTD     /**< port for Enable line     */
 #define LCD_E_PIN        1           /**< pin  for Enable line     */
 
-
+#define F_CPU 1000000
 
 /**@{*/
 

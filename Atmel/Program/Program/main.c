@@ -1,12 +1,13 @@
+
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include "lcd.h"
-#include <util/delay.h>
-#include <stdlib.h>
 #include "main.h"
 #include "test.h"
+#include <util/delay.h>
+#include <stdlib.h>
 
 
 int main() {
