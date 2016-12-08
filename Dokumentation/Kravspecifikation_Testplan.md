@@ -40,7 +40,7 @@ Mätning med oscilloskåp kommer ske med virituellt instrument inuti Proteus.
 
 3.6 Testa och se om vi kan ställa in datum - Okulärt test, se display <br />
 3.7 Testa och se om vi kan ställa in tid - Okulärt test, se display <br />
-4.8 Testa och se om vi kan skriva ut tiden på display - Okulärt test, se display <br />
+4.4 Testa och se om vi kan skriva ut tiden på display - Okulärt test, se display <br />
 1.3 Testa och se om vi kan ändra vilka lampor som är tända, beroendes på dag och tid - Okulärt test, se display <br />
 
 
